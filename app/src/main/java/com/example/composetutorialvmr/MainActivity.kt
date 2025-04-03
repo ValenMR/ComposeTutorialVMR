@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MessageCard(Message("Android", "Jetpack Compose"))
+            MessageCard(Message("VALENTINA", "My Jetpack Compose"))
         }
     }
 }
@@ -84,6 +84,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     ComposeTutorialVMRTheme {
-        Greeting("Android")
+        Greeting("VALENTINA")
     }
 }
