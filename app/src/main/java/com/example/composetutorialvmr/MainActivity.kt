@@ -26,8 +26,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import android.content.res.Configuration
 import androidx.compose.material3.Surface
-
-
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.clickable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +42,7 @@ class MainActivity : ComponentActivity() {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     MessageCard(Message("VALENTINA", "My Jetpack Compose"))
                 }
+                Conversation(SampleData.conversationSample)
             }
         }
     }
@@ -62,7 +68,11 @@ fun MessageCard(msg: Message) {
         // Añadiendo espacio horizontal entre la imagen y la column
         Spacer(modifier = Modifier.width(8.dp))
 
-        Column{
+        // Realizamos un seguimiento si el mensaje se expande o no en esta variable
+        var isExpanded by remember { mutableStateOf(false) }
+
+        // Alternamos la variable isExpanded cuando hacemos clic en esta Columna
+        Column(modifier = Modifier.clickable { isExpanded = !isExpanded }) {
             Text(
                 text = msg.author,
                 color = MaterialTheme.colorScheme.secondary,
@@ -71,10 +81,21 @@ fun MessageCard(msg: Message) {
 
             // Añadiendo espacio vertical entre el author y el message text
             Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = msg.body,
-                style = MaterialTheme.typography.bodyMedium
+
+            Surface(
+                shape = MaterialTheme.shapes.medium,
+                shadowElevation = 1.dp
+            ){
+                Text(
+                    text = msg.body,
+                    modifier = Modifier.padding(all = 4.dp),
+                    //Si el mensaje está expandido se muestra todo su contenido
+                    //sino solo se muestra la primera línea
+                    maxLines = if (isExpanded) Int.MAX_VALUE else 1,
+                    style = MaterialTheme.typography.bodyMedium
                 )
+            }
+
         }
     }
 
@@ -100,6 +121,25 @@ fun PreviewMessageCard(){
     }
 
 }
+
+//funcion para mostrar varios mensajes en la conversación
+@Composable
+fun Conversation(messages: List<Message>) {
+    LazyColumn {
+        items(messages) { message ->
+            MessageCard(message)
+        }
+    }
+}
+
+@Preview
+@Composable
+fun PreviewConversation() {
+    ComposeTutorialVMRTheme {
+        Conversation(SampleData.conversationSample)
+    }
+}
+
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
