@@ -25,13 +25,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import android.content.res.Configuration
+import androidx.compose.material3.Surface
+
 
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ComposeTutorialTheme {
+            ComposeTutorialVMRTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     MessageCard(Message("VALENTINA", "My Jetpack Compose"))
                 }
@@ -89,7 +91,7 @@ fun MessageCard(msg: Message) {
 @Preview
 @Composable
 fun PreviewMessageCard(){
-    ComposeTutorialTheme {
+    ComposeTutorialVMRTheme {
         Surface {
             MessageCard(
                 msg = Message("VALENTINA", "Take a look at Jetpack Compose, it's great!")
